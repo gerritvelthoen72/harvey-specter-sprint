@@ -1,6 +1,25 @@
+import { sanityFetch } from '@/sanity/lib/live'
+import { urlFor } from '@/sanity/lib/image'
+
 const mono = "var(--font-geist-mono)";
 const sans = "var(--font-dm-sans)";
 const inter = "var(--font-inter)";
+
+const PORTFOLIO_QUERY = `*[_type == "portfolioItem"] | order(order asc) {
+  _id,
+  title,
+  image { asset, alt },
+  tags,
+  link
+}`
+
+type PortfolioItem = {
+  _id: string
+  title: string
+  image: { asset: { _ref: string; _type: string }; alt?: string } | null
+  tags: string[] | null
+  link: string | null
+}
 
 const labelStyle: React.CSSProperties = {
   fontFamily: mono,
@@ -34,7 +53,6 @@ const ctaTextStyle: React.CSSProperties = {
   color: "#1f1f1f",
 };
 
-/* L-shaped corner bracket, reused from AboutSection pattern */
 function Corner({ deg }: { deg: 0 | 90 | 180 | 270 }) {
   return (
     <svg
@@ -49,7 +67,6 @@ function Corner({ deg }: { deg: 0 | 90 | 180 | 270 }) {
   );
 }
 
-/* ↗ arrow icon */
 function ArrowIcon() {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style={{ flexShrink: 0 }}>
@@ -77,37 +94,41 @@ function Tag({ label }: { label: string }) {
 }
 
 interface ProjectCardProps {
-  title: string;
-  img: string;
-  tags: string[];
-  desktopHeight: number;
+  title: string
+  imageUrl: string
+  alt: string
+  tags: string[]
+  desktopHeight: number
+  link?: string | null
 }
 
-function ProjectCard({ title, img, tags, desktopHeight }: ProjectCardProps) {
-  return (
+function ProjectCard({ title, imageUrl, alt, tags, desktopHeight, link }: ProjectCardProps) {
+  const inner = (
     <div className="flex flex-col gap-[10px] w-full">
-      {/* Mobile image */}
       <div className="md:hidden relative w-full overflow-hidden" style={{ height: 390 }}>
-        <img src={img} alt={title} className="w-full h-full object-cover" />
+        <img src={imageUrl} alt={alt} className="w-full h-full object-cover" />
         <div className="absolute bottom-4 left-4 flex gap-3">
           {tags.map((t) => <Tag key={t} label={t} />)}
         </div>
       </div>
-      {/* Desktop image */}
       <div className="hidden md:block relative w-full overflow-hidden" style={{ height: desktopHeight }}>
-        <img src={img} alt={title} className="w-full h-full object-cover" />
+        <img src={imageUrl} alt={alt} className="w-full h-full object-cover" />
         <div className="absolute bottom-4 left-4 flex gap-3">
           {tags.map((t) => <Tag key={t} label={t} />)}
         </div>
       </div>
-      {/* Title row */}
       <div className="flex items-center justify-between">
         <p className="md:hidden" style={projectTitleMobileStyle}>{title}</p>
         <p className="hidden md:block" style={projectTitleStyle}>{title}</p>
         <ArrowIcon />
       </div>
     </div>
-  );
+  )
+
+  if (link) {
+    return <a href={link} target="_blank" rel="noopener noreferrer" className="block">{inner}</a>
+  }
+  return inner
 }
 
 function CTABlock() {
@@ -142,14 +163,23 @@ function CTABlock() {
   );
 }
 
-const projects = [
-  { title: "Surfers Paradise", img: "/portfolio-surfers.jpg", tags: ["Social Media", "Photography"], desktopHeight: 744 },
-  { title: "Cyberpunk Caffe",  img: "/portfolio-cyberpunk.jpg", tags: ["Social Media", "Photography"], desktopHeight: 699 },
-  { title: "Agency 976",       img: "/portfolio-agency.jpg",   tags: ["Social Media", "Photography"], desktopHeight: 699 },
-  { title: "Minimal Playground", img: "/portfolio-minimal.jpg", tags: ["Social Media", "Photography"], desktopHeight: 744 },
-];
+const DESKTOP_HEIGHTS = [744, 699, 699, 744]
 
-export default function PortfolioSection() {
+export default async function PortfolioSection() {
+  const { data } = await sanityFetch({ query: PORTFOLIO_QUERY })
+  const items = (data ?? []) as PortfolioItem[]
+
+  const cards = items.map((item: PortfolioItem, i: number) => ({
+    title: item.title,
+    imageUrl: item.image?.asset
+      ? urlFor(item.image).width(900).auto('format').url()
+      : '',
+    alt: item.image?.alt ?? item.title,
+    tags: item.tags ?? [],
+    desktopHeight: DESKTOP_HEIGHTS[i] ?? 699,
+    link: item.link,
+  }))
+
   return (
     <section className="w-full bg-white px-4 md:px-8 py-12 md:py-[80px]">
 
@@ -192,13 +222,8 @@ export default function PortfolioSection() {
           </div>
           <p className="mt-1" style={labelStyle}>004</p>
         </div>
-
-        {/* Rotated [ PORTFOLIO ] label */}
         <div className="flex items-center justify-center shrink-0" style={{ width: 15, height: 110 }}>
-          <p
-            className="-rotate-90 whitespace-nowrap"
-            style={labelStyle}
-          >
+          <p className="-rotate-90 whitespace-nowrap" style={labelStyle}>
             [ portfolio ]
           </p>
         </div>
@@ -206,24 +231,22 @@ export default function PortfolioSection() {
 
       {/* ── Mobile: single column ── */}
       <div className="md:hidden flex flex-col gap-6">
-        {projects.map((p) => (
-          <ProjectCard key={p.title} {...p} />
+        {cards.map((c) => (
+          <ProjectCard key={c.title} {...c} />
         ))}
         <CTABlock />
       </div>
 
       {/* ── Desktop: two-column staggered ── */}
       <div className="hidden md:flex items-start gap-6 w-full">
-        {/* Left col: items 0 & 1 + CTA */}
         <div className="flex-1 flex flex-col gap-16 min-w-0">
-          <ProjectCard {...projects[0]} />
-          <ProjectCard {...projects[1]} />
+          {cards[0] && <ProjectCard {...cards[0]} />}
+          {cards[1] && <ProjectCard {...cards[1]} />}
           <CTABlock />
         </div>
-        {/* Right col: offset 240px, items 2 & 3 */}
         <div className="flex-1 flex flex-col gap-16 min-w-0 pt-[240px]">
-          <ProjectCard {...projects[2]} />
-          <ProjectCard {...projects[3]} />
+          {cards[2] && <ProjectCard {...cards[2]} />}
+          {cards[3] && <ProjectCard {...cards[3]} />}
         </div>
       </div>
 
