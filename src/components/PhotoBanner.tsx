@@ -4,13 +4,12 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function PhotoBanner() {
   const imgRef     = useRef<HTMLImageElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       gsap.fromTo(
         imgRef.current,

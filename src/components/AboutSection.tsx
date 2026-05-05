@@ -4,8 +4,6 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const mono = "var(--font-geist-mono)";
 const sans = "var(--font-dm-sans)";
 
@@ -65,6 +63,7 @@ export default function AboutSection() {
   const imgMobile      = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       // Start fully hidden — container bg-black shows through
       gsap.set([imgDesktop.current, imgMobile.current], {

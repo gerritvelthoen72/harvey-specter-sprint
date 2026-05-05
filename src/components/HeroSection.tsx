@@ -5,8 +5,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TalkButton from "./TalkButton";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function HeroSection() {
   // Parallax refs
   const sectionRef  = useRef<HTMLElement>(null);
@@ -17,6 +15,7 @@ export default function HeroSection() {
 
   // ── Parallax scroll ────────────────────────────────────────────────────────
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {

@@ -5,8 +5,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TalkButton from "./TalkButton";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const navItems = ["About", "Services", "Projects", "News", "Contact"];
 
 function NavLink({ item }: { item: string }) {
@@ -123,6 +121,7 @@ export default function Navbar() {
 
   // ScrollTrigger for dark sections
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const darkSections = document.querySelectorAll('[data-nav-theme="dark"]');
     const triggers = Array.from(darkSections).map((section) =>
       ScrollTrigger.create({
