@@ -32,8 +32,7 @@ function NavLink({ item, scrolled }: { item: { label: string; href: string }; sc
       <span
         ref={underlineRef}
         className="absolute bottom-0 left-0 w-full h-[1.5px]"
-        style={{ backgroundColor: color }}
-        style={{ transform: "scaleX(0)" }}
+        style={{ backgroundColor: color, transform: "scaleX(0)" }}
       />
     </a>
   );
