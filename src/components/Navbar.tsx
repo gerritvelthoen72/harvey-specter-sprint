@@ -5,14 +5,20 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TalkButton from "./TalkButton";
 
-const navItems = ["About", "Services", "Projects", "News", "Contact"];
+const navItems: { label: string; href: string }[] = [
+  { label: "About",    href: "/about" },
+  { label: "Services", href: "#services" },
+  { label: "Projects", href: "#projects" },
+  { label: "News",     href: "#news" },
+  { label: "Contact",  href: "#contact" },
+];
 
-function NavLink({ item }: { item: string }) {
+function NavLink({ item }: { item: { label: string; href: string } }) {
   const underlineRef = useRef<HTMLSpanElement>(null);
 
   return (
     <a
-      href={`#${item.toLowerCase()}`}
+      href={item.href}
       className="relative inline-block"
       onMouseEnter={() =>
         gsap.to(underlineRef.current, {
@@ -31,7 +37,7 @@ function NavLink({ item }: { item: string }) {
         })
       }
     >
-      {item}
+      {item.label}
       <span
         ref={underlineRef}
         className="absolute bottom-0 left-0 w-full h-[1.5px]"
@@ -194,13 +200,13 @@ export default function Navbar() {
       >
         {navItems.map((item, i) => (
           <a
-            key={item}
+            key={item.label}
             ref={(el) => { menuItemsRef.current[i] = el; }}
-            href={`#${item.toLowerCase()}`}
+            href={item.href}
             className="text-white text-3xl font-semibold capitalize tracking-[-0.04em] text-center"
             onClick={() => setMenuOpen(false)}
           >
-            {item}
+            {item.label}
           </a>
         ))}
         <TalkButton
