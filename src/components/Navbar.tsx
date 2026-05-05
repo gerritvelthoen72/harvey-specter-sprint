@@ -83,7 +83,7 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50">
       <div
         className="flex items-center justify-between px-4 md:px-8 py-6 backdrop-blur-md"
-        style={{ fontFamily: "var(--font-dm-sans)", background: "rgba(255,255,255,0.6)" }}
+        style={{ fontFamily: "var(--font-dm-sans)", background: "rgba(255,255,255,0.3)" }}
       >
         {/* Logo */}
         <a href="/" className="text-black text-base font-semibold tracking-[-0.04em] capitalize">
