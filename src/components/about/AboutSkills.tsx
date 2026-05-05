@@ -22,11 +22,36 @@ const stats = [
 ];
 
 export default function AboutSkills() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef  = useRef<HTMLElement>(null);
+  const statRefs    = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
+
+      // Count-up for each stat
+      stats.forEach((s, i) => {
+        const el  = statRefs.current[i];
+        if (!el) return;
+        const num    = parseInt(s.value, 10);
+        const suffix = s.value.replace(/[0-9]/g, "");
+        const obj    = { val: 0 };
+        gsap.to(obj, {
+          val: num,
+          duration: 1.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          onUpdate() {
+            el.textContent = Math.round(obj.val) + suffix;
+          },
+        });
+      });
+
+      // Skill rows fade-up
       const items = sectionRef.current?.querySelectorAll(".skill-row");
       if (!items) return;
       Array.from(items).forEach((item) => {
@@ -56,9 +81,10 @@ export default function AboutSkills() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 md:mb-20 text-center items-center justify-items-center">
-        {stats.map((s) => (
+        {stats.map((s, i) => (
           <div key={s.label} className="flex flex-col gap-1">
             <span
+              ref={(el) => { statRefs.current[i] = el; }}
               style={{
                 fontFamily: sans,
                 fontSize: "clamp(40px, 5vw, 72px)",
