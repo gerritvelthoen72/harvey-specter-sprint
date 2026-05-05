@@ -89,7 +89,7 @@ export default function Navbar() {
   }, [menuOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
+    <header className="fixed top-0 left-0 right-0" style={{ zIndex: menuOpen ? 70 : 50 }}>
       <div
         className="flex items-center justify-between px-4 md:px-8 py-6 backdrop-blur-md transition-all duration-300"
         style={{ fontFamily: "var(--font-dm-sans)", background: scrolled ? "rgba(255,255,255,0.3)" : "transparent", backdropFilter: scrolled ? undefined : "none" }}
@@ -118,8 +118,7 @@ export default function Navbar() {
 
         {/* Hamburger */}
         <button
-          className="md:hidden flex flex-col gap-[5px] p-1 relative"
-          style={{ zIndex: menuOpen ? 70 : undefined }}
+          className="md:hidden flex flex-col gap-[5px] p-1"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
