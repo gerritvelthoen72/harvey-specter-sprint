@@ -79,16 +79,16 @@ export default function ServicesSection() {
       </div>
 
       {/* Service items */}
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-12 group/list">
         {services.map((s) => (
-          <div key={s.num} className="flex flex-col gap-[9px] w-full">
+          <div key={s.num} className="flex flex-col gap-[9px] w-full group transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100">
             {/* Number + rule */}
             <p style={labelStyle}>{s.num}</p>
-            <div className="w-full border-t border-white" />
+            <div className="w-full border-t border-white transition-colors duration-300 group-hover:border-[#e8d5a3]" />
 
             {/* Desktop: title left, desc+image right | Mobile: stacked */}
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pt-2">
-              <p style={titleStyle}>{s.title}</p>
+              <p style={titleStyle} className="transition-colors duration-300 group-hover:text-[#e8d5a3]">{s.title}</p>
 
               <div className="flex flex-col md:flex-row items-start gap-6">
                 <p style={{ ...descStyle, maxWidth: 393 }}>{s.desc}</p>
@@ -96,7 +96,7 @@ export default function ServicesSection() {
                   <img
                     src={s.img}
                     alt={s.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
               </div>
