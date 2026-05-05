@@ -122,9 +122,9 @@ export default function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span ref={bar1Ref} className="block w-6 h-[2px]" style={{ backgroundColor: scrolled ? "#000" : "#fff" }} />
-          <span ref={bar2Ref} className="block w-6 h-[2px]" style={{ backgroundColor: scrolled ? "#000" : "#fff" }} />
-          <span ref={bar3Ref} className="block w-6 h-[2px]" style={{ backgroundColor: scrolled ? "#000" : "#fff" }} />
+          <span ref={bar1Ref} className="block w-6 h-[2px]" style={{ backgroundColor: menuOpen ? "#fff" : scrolled ? "#000" : "#fff" }} />
+          <span ref={bar2Ref} className="block w-6 h-[2px]" style={{ backgroundColor: menuOpen ? "#fff" : scrolled ? "#000" : "#fff" }} />
+          <span ref={bar3Ref} className="block w-6 h-[2px]" style={{ backgroundColor: menuOpen ? "#fff" : scrolled ? "#000" : "#fff" }} />
         </button>
       </div>
 
