@@ -138,7 +138,6 @@ export default function Navbar() {
         onLeave:      () => animateToTheme(false),
         onEnterBack:  () => animateToTheme(true),
         onLeaveBack:  () => animateToTheme(false),
-        onToggle:     (self) => animateToTheme(self.isActive),
       })
     );
     return () => triggers.forEach((t) => t.kill());
