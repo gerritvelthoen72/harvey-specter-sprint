@@ -55,7 +55,7 @@ export default function AboutSkills() {
     <section ref={sectionRef} className="w-full bg-[#f3f3f3] px-4 md:px-8 py-12 md:py-[100px]">
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 md:mb-20">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 md:mb-20 text-center items-center justify-items-center">
         {stats.map((s) => (
           <div key={s.label} className="flex flex-col gap-1">
             <span
