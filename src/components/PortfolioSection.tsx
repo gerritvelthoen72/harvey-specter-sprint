@@ -105,15 +105,15 @@ interface ProjectCardProps {
 
 function ProjectCard({ title, imageUrl, alt, tags, desktopHeight, link }: ProjectCardProps) {
   const inner = (
-    <div className="flex flex-col gap-[10px] w-full">
+    <div className="group flex flex-col gap-[10px] w-full">
       <div className="md:hidden relative w-full overflow-hidden" style={{ height: 390 }}>
-        <img src={imageUrl} alt={alt} className="w-full h-full object-cover" />
+        <img src={imageUrl} alt={alt} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div className="absolute bottom-4 left-4 flex gap-3">
           {tags.map((t) => <Tag key={t} label={t} />)}
         </div>
       </div>
       <div className="hidden md:block relative w-full overflow-hidden" style={{ height: desktopHeight }}>
-        <img src={imageUrl} alt={alt} className="w-full h-full object-cover" />
+        <img src={imageUrl} alt={alt} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         <div className="absolute bottom-4 left-4 flex gap-3">
           {tags.map((t) => <Tag key={t} label={t} />)}
         </div>
@@ -121,7 +121,9 @@ function ProjectCard({ title, imageUrl, alt, tags, desktopHeight, link }: Projec
       <div className="flex items-center justify-between">
         <p className="md:hidden" style={projectTitleMobileStyle}>{title}</p>
         <p className="hidden md:block" style={projectTitleStyle}>{title}</p>
-        <ArrowIcon />
+        <div className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+          <ArrowIcon />
+        </div>
       </div>
     </div>
   )
