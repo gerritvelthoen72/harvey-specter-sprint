@@ -20,9 +20,9 @@ function ArrowIcon() {
 
 function ArticleCard({ img, body, imgHeight }: { img: string; body: string; imgHeight: number }) {
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="group flex flex-col gap-4 w-full">
       <div className="w-full overflow-hidden shrink-0" style={{ height: imgHeight }}>
-        <img src={img} alt="" className="w-full h-full object-cover" />
+        <img src={img} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
       </div>
       <p
         style={{
