@@ -49,11 +49,11 @@ function NavLink({ item }: { item: { label: string; href: string } }) {
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   // Refs for stable reads inside callbacks
   const menuOpenRef = useRef(false);
-  const isDarkRef = useRef(false);
+  const isDarkRef = useRef(true);
   const isFirstRender = useRef(true);
 
   // Nav element refs
@@ -156,7 +156,7 @@ export default function Navbar() {
         <span
           ref={logoRef}
           className="font-dm-sans text-base font-semibold tracking-[-0.04em] capitalize"
-          style={{ color: "#000000" }}
+          style={{ color: "#ffffff" }}
         >
           H.Studio
         </span>
@@ -165,7 +165,7 @@ export default function Navbar() {
         <div
           ref={linksContainerRef}
           className="hidden md:flex items-center gap-14 text-base font-semibold tracking-[-0.04em] capitalize"
-          style={{ color: "#000000" }}
+          style={{ color: "#ffffff" }}
         >
           {navItems.map((item) => <NavLink key={item.label} item={item} />)}
         </div>
@@ -175,7 +175,7 @@ export default function Navbar() {
           ref={navBtnRef}
           themeRef={navBtnThemeRef}
           className="hidden md:flex items-center justify-center border border-black text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer"
-          variant="dark"
+          variant="ghost"
         >
           Let&apos;s talk
         </TalkButton>
@@ -186,9 +186,9 @@ export default function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span ref={bar1Ref} className="block w-6 h-[2px]" style={{ backgroundColor: "#000000" }} />
-          <span ref={bar2Ref} className="block w-6 h-[2px]" style={{ backgroundColor: "#000000" }} />
-          <span ref={bar3Ref} className="block w-6 h-[2px]" style={{ backgroundColor: "#000000" }} />
+          <span ref={bar1Ref} className="block w-6 h-[2px]" style={{ backgroundColor: "#ffffff" }} />
+          <span ref={bar2Ref} className="block w-6 h-[2px]" style={{ backgroundColor: "#ffffff" }} />
+          <span ref={bar3Ref} className="block w-6 h-[2px]" style={{ backgroundColor: "#ffffff" }} />
         </button>
       </div>
 

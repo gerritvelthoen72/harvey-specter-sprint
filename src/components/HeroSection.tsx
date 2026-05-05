@@ -40,7 +40,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative isolate w-full h-[635px] md:h-[847px] overflow-hidden flex flex-col">
+    <section ref={sectionRef} data-nav-theme="dark" className="relative isolate w-full h-[635px] md:h-[847px] overflow-hidden flex flex-col">
       {/* Background image */}
       <div
         ref={bgRef}
