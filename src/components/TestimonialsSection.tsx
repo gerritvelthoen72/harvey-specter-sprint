@@ -1,6 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const sans = "var(--font-dm-sans)";
 
@@ -94,8 +96,38 @@ function Card({ data, rotation, width = 353 }: { data: CardData; rotation: numbe
 }
 
 export default function TestimonialsSection() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef  = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const card0Ref   = useRef<HTMLDivElement>(null);
+  const card1Ref   = useRef<HTMLDivElement>(null);
+  const card2Ref   = useRef<HTMLDivElement>(null);
+  const card3Ref   = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const cards = [card0Ref, card1Ref, card2Ref, card3Ref];
+    const offsets = [{ x: 40, y: 80 }, { x: -60, y: 60 }, { x: -40, y: 80 }, { x: 60, y: 60 }];
+
+    const triggers = cards.map((ref, i) => {
+      gsap.set(ref.current, { opacity: 0, x: offsets[i].x, y: offsets[i].y });
+      return ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: `top+=${i * 40} 80%`,
+        end: `top+=${i * 40 + 200} 20%`,
+        scrub: 1.5,
+        onUpdate: (self) => {
+          gsap.set(ref.current, {
+            opacity: self.progress,
+            x: offsets[i].x * (1 - self.progress),
+            y: offsets[i].y * (1 - self.progress),
+          });
+        },
+      });
+    });
+
+    return () => triggers.forEach((t) => t.kill());
+  }, []);
 
   function handleScroll() {
     const el = scrollRef.current;
@@ -172,7 +204,7 @@ export default function TestimonialsSection() {
       </div>
 
       {/* ── Desktop ── */}
-      <div className="hidden md:block relative w-full px-8" style={{ height: 900 }}>
+      <div ref={sectionRef} className="hidden md:block relative w-full px-8" style={{ height: 900 }}>
 
         {/* Heading — z-index 1, sits between behind/front card layers */}
         <h2
@@ -191,22 +223,22 @@ export default function TestimonialsSection() {
         </h2>
 
         {/* Lukas — top-right, BEHIND the heading (z-index 0) */}
-        <div style={{ position: "absolute", left: "47%", top: 240, zIndex: 0 }}>
+        <div ref={card0Ref} style={{ position: "absolute", left: "47%", top: 240, zIndex: 0 }}>
           <Card data={testimonials[0]} rotation={2.9} />
         </div>
 
         {/* Marko — top-left, in front (z-index 2) */}
-        <div style={{ position: "absolute", left: "6%", top: 120, zIndex: 2 }}>
+        <div ref={card1Ref} style={{ position: "absolute", left: "6%", top: 120, zIndex: 2 }}>
           <Card data={testimonials[1]} rotation={-6.85} />
         </div>
 
         {/* Sarah — bottom-left/center, in front (z-index 2) */}
-        <div style={{ position: "absolute", left: "20%", top: 530, zIndex: 2 }}>
+        <div ref={card2Ref} style={{ position: "absolute", left: "20%", top: 530, zIndex: 2 }}>
           <Card data={testimonials[2]} rotation={2.23} />
         </div>
 
         {/* Sofia — bottom-right, in front (z-index 2) */}
-        <div style={{ position: "absolute", left: "67%", top: 510, zIndex: 2 }}>
+        <div ref={card3Ref} style={{ position: "absolute", left: "67%", top: 510, zIndex: 2 }}>
           <Card data={testimonials[3]} rotation={-4.15} />
         </div>
 
