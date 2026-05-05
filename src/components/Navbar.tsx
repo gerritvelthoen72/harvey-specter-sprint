@@ -86,9 +86,9 @@ export default function Navbar() {
         style={{ fontFamily: "var(--font-dm-sans)", background: "rgba(0,0,0,0.3)" }}
       >
         {/* Logo */}
-        <span className="text-white text-base font-semibold tracking-[-0.04em] capitalize">
+        <a href="/" className="text-white text-base font-semibold tracking-[-0.04em] capitalize">
           H.Studio
-        </span>
+        </a>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-14 text-base font-semibold tracking-[-0.04em] capitalize">
