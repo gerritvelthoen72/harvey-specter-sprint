@@ -18,7 +18,7 @@ function NavLink({ item }: { item: { label: string; href: string } }) {
   return (
     <a
       href={item.href}
-      className="relative inline-block text-white"
+      className="relative inline-block text-black"
       onMouseEnter={() =>
         gsap.to(underlineRef.current, { scaleX: 1, transformOrigin: "left center", duration: 0.3, ease: "power2.out" })
       }
@@ -29,7 +29,7 @@ function NavLink({ item }: { item: { label: string; href: string } }) {
       {item.label}
       <span
         ref={underlineRef}
-        className="absolute bottom-0 left-0 w-full h-[1.5px] bg-white"
+        className="absolute bottom-0 left-0 w-full h-[1.5px] bg-black"
         style={{ transform: "scaleX(0)" }}
       />
     </a>
@@ -83,10 +83,10 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50">
       <div
         className="flex items-center justify-between px-4 md:px-8 py-6 backdrop-blur-md"
-        style={{ fontFamily: "var(--font-dm-sans)", background: "rgba(0,0,0,0.3)" }}
+        style={{ fontFamily: "var(--font-dm-sans)", background: "rgba(255,255,255,0.6)" }}
       >
         {/* Logo */}
-        <a href="/" className="text-white text-base font-semibold tracking-[-0.04em] capitalize">
+        <a href="/" className="text-black text-base font-semibold tracking-[-0.04em] capitalize">
           H.Studio
         </a>
 
@@ -97,7 +97,7 @@ export default function Navbar() {
 
         {/* Desktop CTA */}
         <button
-          className="hidden md:flex items-center justify-center text-white text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer border border-white"
+          className="hidden md:flex items-center justify-center text-black text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer border border-black"
           style={{ background: "transparent" }}
         >
           Let&apos;s talk
@@ -109,9 +109,9 @@ export default function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span ref={bar1Ref} className="block w-6 h-[2px] bg-white" />
-          <span ref={bar2Ref} className="block w-6 h-[2px] bg-white" />
-          <span ref={bar3Ref} className="block w-6 h-[2px] bg-white" />
+          <span ref={bar1Ref} className="block w-6 h-[2px] bg-black" />
+          <span ref={bar2Ref} className="block w-6 h-[2px] bg-black" />
+          <span ref={bar3Ref} className="block w-6 h-[2px] bg-black" />
         </button>
       </div>
 
