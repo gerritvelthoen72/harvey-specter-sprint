@@ -33,21 +33,23 @@ export default function IntroSection() {
       const lines = sectionRef.current?.querySelectorAll(".fade-line");
       if (!lines) return;
 
-      gsap.fromTo(
-        lines,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "power2.out",
-          duration: 0.8,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
-          },
-        }
-      );
+      Array.from(lines).forEach((line, i) => {
+        gsap.fromTo(
+          line,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: line,
+              start: `top 90%`,
+              end: `top 60%`,
+              scrub: 1,
+            },
+          }
+        );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
