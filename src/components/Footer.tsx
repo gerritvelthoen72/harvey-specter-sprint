@@ -1,3 +1,5 @@
+import TalkButton from "./TalkButton";
+
 const mono = "var(--font-geist-mono)";
 const sans = "var(--font-dm-sans)";
 
@@ -25,7 +27,7 @@ const legalStyle: React.CSSProperties = {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-black px-4 md:px-8 pt-12 md:pt-[48px]">
+    <footer data-nav-theme="dark" className="w-full bg-black px-4 md:px-8 pt-12 md:pt-[48px]">
 
       {/* ── Top: CTA + socials ── */}
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 md:gap-0 mb-6 md:mb-12">
@@ -48,19 +50,11 @@ export default function Footer() {
             <strong style={{ fontStyle: "normal", fontWeight: 900 }}>project</strong>
             {" "}in mind?
           </p>
-          <button
+          <TalkButton
+            variant="ghost"
             className="self-start rounded-full px-4 py-3 border border-white"
-            style={{
-              fontFamily: sans,
-              fontSize: 14,
-              fontWeight: 500,
-              color: "#ffffff",
-              letterSpacing: "-0.04em",
-              background: "transparent",
-            }}
-          >
-            Let&apos;s talk
-          </button>
+            style={{ fontFamily: sans, fontSize: 14, fontWeight: 500, letterSpacing: "-0.04em" }}
+          />
         </div>
 
         {/* Social links — desktop: 2 columns (center + right), mobile: stacked */}

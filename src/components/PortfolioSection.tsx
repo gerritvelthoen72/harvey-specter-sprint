@@ -1,5 +1,6 @@
 import { sanityFetch } from '@/sanity/lib/live'
 import { urlFor } from '@/sanity/lib/image'
+import TalkButton from "./TalkButton"
 
 const mono = "var(--font-geist-mono)";
 const sans = "var(--font-dm-sans)";
@@ -142,18 +143,10 @@ function CTABlock() {
         <p style={ctaTextStyle}>
           Discover how my creativity transforms ideas into impactful digital experiences — schedule a call with me to get started.
         </p>
-        <button
-          className="self-start rounded-full px-4 py-3 text-white"
-          style={{
-            background: "#000",
-            fontFamily: sans,
-            fontWeight: 500,
-            fontSize: 14,
-            letterSpacing: "-0.04em",
-          }}
-        >
-          Let&apos;s talk
-        </button>
+        <TalkButton
+          className="self-start rounded-full px-4 py-3"
+          style={{ fontFamily: sans, fontWeight: 500, fontSize: 14, letterSpacing: "-0.04em" }}
+        />
       </div>
       <div className="flex flex-col justify-between shrink-0">
         <Corner deg={90} />

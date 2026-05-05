@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useRef, useState } from "react";
 
 const sans = "var(--font-dm-sans)";
 
@@ -57,12 +59,22 @@ function ArticleCard({ img, body, imgHeight }: { img: string; body: string; imgH
 }
 
 export default function NewsSection() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  function handleScroll() {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / articles.length;
+    const index = Math.round(el.scrollLeft / cardWidth);
+    setActiveIndex(Math.min(Math.max(index, 0), articles.length - 1));
+  }
+
   return (
     <section className="w-full bg-[#f3f3f3] px-4 md:px-8 py-16 md:py-[120px]">
 
       {/* ── Mobile ── */}
       <div className="md:hidden flex flex-col gap-8">
-        {/* Heading */}
         <h2
           className="uppercase"
           style={{
@@ -76,15 +88,52 @@ export default function NewsSection() {
         >
           Keep up with my latest news &amp; achievements
         </h2>
-        {/* Cards — horizontal scroll, 2nd card partially visible */}
+
+        {/* Scroll-snap slider */}
         <div
-          className="flex gap-4 overflow-x-auto -mx-4 px-4 pb-4"
-          style={{ scrollbarWidth: "none" }}
+          ref={scrollRef}
+          onScroll={handleScroll}
+          style={{
+            display: "flex",
+            overflowX: "scroll",
+            scrollSnapType: "x mandatory",
+            scrollbarWidth: "none",
+            WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"],
+            gap: 16,
+            marginLeft: -16,
+            marginRight: -16,
+            paddingLeft: 16,
+            paddingRight: 16,
+            paddingBottom: 8,
+          }}
         >
           {articles.map((a, i) => (
-            <div key={i} className="shrink-0" style={{ width: 300 }}>
+            <div
+              key={i}
+              style={{
+                scrollSnapAlign: "center",
+                flexShrink: 0,
+                width: "calc(100vw - 48px)",
+              }}
+            >
               <ArticleCard img={a.img} body={a.body} imgHeight={398} />
             </div>
+          ))}
+        </div>
+
+        {/* Dot indicators */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
+          {articles.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                background: i === activeIndex ? "#000" : "#d1d1d1",
+                transition: "background 0.2s",
+              }}
+            />
           ))}
         </div>
       </div>

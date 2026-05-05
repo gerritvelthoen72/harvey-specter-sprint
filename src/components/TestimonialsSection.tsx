@@ -1,3 +1,7 @@
+"use client";
+
+import { useRef, useState } from "react";
+
 const sans = "var(--font-dm-sans)";
 
 interface CardData {
@@ -90,11 +94,22 @@ function Card({ data, rotation, width = 353 }: { data: CardData; rotation: numbe
 }
 
 export default function TestimonialsSection() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  function handleScroll() {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / testimonials.length;
+    const index = Math.round(el.scrollLeft / cardWidth);
+    setActiveIndex(Math.min(Math.max(index, 0), testimonials.length - 1));
+  }
+
   return (
     <section className="w-full bg-white overflow-hidden">
 
       {/* ── Mobile ── */}
-      <div className="md:hidden px-4 pt-16 pb-8 flex flex-col gap-8">
+      <div className="md:hidden pt-16 pb-10 flex flex-col gap-8">
         <h2
           style={{
             fontFamily: sans,
@@ -109,14 +124,50 @@ export default function TestimonialsSection() {
         >
           Testimonials
         </h2>
-        {/* Horizontal scroll strip — second card partially visible */}
-        <div className="flex overflow-x-auto gap-0 -mx-4 px-4 pb-8" style={{ scrollbarWidth: "none" }}>
-          <div style={{ marginRight: -10, flexShrink: 0 }}>
-            <Card data={testimonials[1]} rotation={-3.5} width={260} />
-          </div>
-          <div style={{ flexShrink: 0 }}>
-            <Card data={testimonials[3]} rotation={2} width={260} />
-          </div>
+
+        {/* Scroll-snap slider */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          style={{
+            display: "flex",
+            overflowX: "scroll",
+            scrollSnapType: "x mandatory",
+            scrollbarWidth: "none",
+            WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"],
+            gap: 16,
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}
+        >
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              style={{
+                scrollSnapAlign: "center",
+                flexShrink: 0,
+                width: "calc(100vw - 48px)",
+              }}
+            >
+              <Card data={t} rotation={0} />
+            </div>
+          ))}
+        </div>
+
+        {/* Dot indicators */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
+          {testimonials.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                background: i === activeIndex ? "#000" : "#d1d1d1",
+                transition: "background 0.2s",
+              }}
+            />
+          ))}
         </div>
       </div>
 

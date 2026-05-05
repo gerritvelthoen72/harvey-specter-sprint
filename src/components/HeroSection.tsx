@@ -1,24 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import React, { useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import TalkButton from "./TalkButton";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // Parallax refs
+  const sectionRef  = useRef<HTMLElement>(null);
+  const bgRef       = useRef<HTMLDivElement>(null);
+  const helloRef    = useRef<HTMLParagraphElement>(null);
+  const harveyRef   = useRef<HTMLSpanElement>(null);
+  const specterRef  = useRef<HTMLSpanElement>(null);
+
+  // ── Parallax scroll ────────────────────────────────────────────────────────
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+
+      // "Harvey" + "Hello I'm" exit left
+      tl.to([harveyRef.current, helloRef.current], { x: "-45vw", ease: "none" }, 0);
+
+      // "Specter" exits right
+      tl.to(specterRef.current, { x: "45vw", ease: "none" }, 0);
+
+      // Background zooms in
+      tl.to(bgRef.current, { scale: 1.18, ease: "none" }, 0);
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative isolate w-full h-[635px] md:h-[847px] overflow-hidden flex flex-col">
+    <section ref={sectionRef} className="relative isolate w-full h-[635px] md:h-[847px] overflow-hidden flex flex-col">
       {/* Background image */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        ref={bgRef}
+        className="absolute inset-0 pointer-events-none bg-cover md:[background-size:170%]"
         style={{
           backgroundImage: "url(/hero-bg.jpg)",
-          backgroundSize: "170%",
           backgroundPosition: "50% 26%",
           backgroundRepeat: "no-repeat",
         }}
       />
 
-      {/* Frosted glass — fades in gradually from bottom */}
+      {/* Frosted glass */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[349px] backdrop-blur-[10px] bg-[rgba(217,217,217,0.01)]"
         style={{
@@ -30,135 +65,55 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative flex flex-col h-full px-4 md:px-8">
 
-        {/* Nav */}
-        <nav className="shrink-0 flex items-center justify-between py-6">
-          <span
-            className="text-base font-semibold tracking-[-0.04em] text-black capitalize"
-            style={{ fontFamily: "var(--font-dm-sans)" }}
-          >
-            H.Studio
-          </span>
-
-          <div
-            className="hidden md:flex items-center gap-14 text-base font-semibold tracking-[-0.04em] text-black capitalize"
-            style={{ fontFamily: "var(--font-dm-sans)" }}
-          >
-            {["About", "Services", "Projects", "News", "Contact"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="hover:opacity-60 transition-opacity">
-                {item}
-              </a>
-            ))}
-          </div>
-
-          <button
-            className="hidden md:flex items-center justify-center bg-black text-white text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer"
-            style={{ fontFamily: "var(--font-dm-sans)" }}
-          >
-            Let&apos;s talk
-          </button>
-
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden flex flex-col gap-[5px] p-1"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            {menuOpen ? (
-              <>
-                <span className="block w-6 h-[2px] bg-black rotate-45 translate-y-[7px]" />
-                <span className="block w-6 h-[2px] bg-black opacity-0" />
-                <span className="block w-6 h-[2px] bg-black -rotate-45 -translate-y-[7px]" />
-              </>
-            ) : (
-              <>
-                <span className="block w-6 h-[2px] bg-black" />
-                <span className="block w-6 h-[2px] bg-black" />
-                <span className="block w-6 h-[2px] bg-black" />
-              </>
-            )}
-          </button>
-        </nav>
-
-        {/* Mobile full-screen menu */}
-        {menuOpen && (
-          <div
-            className="md:hidden absolute inset-0 z-20 bg-black/90 backdrop-blur-sm flex flex-col px-8 pt-24 gap-8"
-            style={{ fontFamily: "var(--font-dm-sans)" }}
-          >
-            <button
-              className="absolute top-6 right-4 p-1"
-              aria-label="Close menu"
-              onClick={() => setMenuOpen(false)}
-            >
-              <span className="block w-6 h-[2px] bg-white rotate-45 translate-y-[1px]" />
-              <span className="block w-6 h-[2px] bg-white -rotate-45" />
-            </button>
-            {["About", "Services", "Projects", "News", "Contact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-white text-3xl font-semibold capitalize tracking-[-0.04em]"
-                onClick={() => setMenuOpen(false)}
-              >
-                {item}
-              </a>
-            ))}
-            <button
-              className="mt-4 self-start bg-white text-black text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em]"
-              onClick={() => setMenuOpen(false)}
-            >
-              Let&apos;s talk
-            </button>
-          </div>
-        )}
-
-        {/* Hero block — vertically centered in space below nav */}
+        {/* Hero block */}
         <div className="flex-1 flex flex-col justify-center">
-
-          {/* Label + H1 — group centered on screen, label aligned with H */}
           <div
             className="flex flex-col items-center md:items-start mx-auto"
             style={{ width: "fit-content", maxWidth: "100%" }}
           >
+            {/* "Hello I'm" travels with Harvey */}
             <p
+              ref={helloRef}
               className="text-white uppercase mix-blend-overlay leading-[1.1] text-[14px] tracking-wide whitespace-nowrap"
-              style={{ fontFamily: "var(--font-geist-mono)" }}
+              style={{ fontFamily: "var(--font-geist-mono)", display: "inline-block" }}
             >
               [ Hello i&apos;m ]
             </p>
+
+            {/* Each word is an independent inline-block so GSAP can move them separately */}
             <h1
               className="text-center md:text-left text-white capitalize mix-blend-overlay font-medium leading-[1.1]"
               style={{
                 fontFamily: "var(--font-dm-sans)",
                 fontSize: "clamp(60px, 13.75vw, 198px)",
                 letterSpacing: "-0.07em",
-                wordSpacing: "0.25em",
               }}
             >
-              Harvey Specter
+              <span ref={harveyRef}  style={{ display: "inline-block" }}>Harvey</span>
+              <span style={{ display: "inline-block", width: "0.25em" }} />
+              <span ref={specterRef} style={{ display: "inline-block" }}>Specter</span>
             </h1>
-          </div>
 
-          {/* Body copy + CTA — directly beneath h1, right-aligned on desktop */}
-          <div className="flex md:justify-end w-full mt-3 md:mt-2">
-            <div
-              className="flex flex-col gap-[17px] items-start w-full md:w-[294px]"
-              style={{ fontFamily: "var(--font-dm-sans)" }}
-            >
-              <p className="font-bold italic text-[#1f1f1f] text-[14px] tracking-[-0.035em] uppercase leading-[1.1]">
-                <strong>H.Studio is a </strong>
-                <span className="font-normal">full-service</span>
-                <strong> creative studio creating beautiful digital experiences and products. We are an </strong>
-                <span className="font-normal">award winning</span>
-                <strong> design and art group specializing in branding, web design and engineering.</strong>
-              </p>
-              <button className="bg-black text-white text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer">
-                Let&apos;s talk
-              </button>
+            <div className="flex w-full mt-3 md:mt-2 md:justify-end">
+              <div
+                className="flex flex-col gap-[17px] items-start w-full md:w-[294px]"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
+              >
+                <p className="font-bold italic text-[#1f1f1f] text-[14px] tracking-[-0.035em] uppercase leading-[1.1]">
+                  <strong>H.Studio is a </strong>
+                  <span className="font-normal">full-service</span>
+                  <strong> creative studio creating beautiful digital experiences and products. We are an </strong>
+                  <span className="font-normal">award winning</span>
+                  <strong> design and art group specializing in branding, web design and engineering.</strong>
+                </p>
+                <TalkButton className="self-center md:self-start border border-black text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer">
+                  Let&apos;s talk
+                </TalkButton>
+              </div>
             </div>
           </div>
-
         </div>
+
       </div>
     </section>
   );

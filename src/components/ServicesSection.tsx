@@ -57,7 +57,7 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section className="w-full bg-black px-4 md:px-8 py-12 md:py-[80px]">
+    <section data-nav-theme="dark" className="w-full bg-black px-4 md:px-8 py-12 md:py-[80px]">
 
       {/* Section label */}
       <p className="mb-6 md:mb-12" style={labelStyle}>[ Services ]</p>
