@@ -65,12 +65,21 @@ export default function Navbar() {
   const animateToTheme = useCallback((dark: boolean) => {
     setIsDark(dark);
     isDarkRef.current = dark;
+    // Bars are GSAP-owned — update them here to stay in sync
+    if (!menuOpenRef.current) {
+      gsap.to([bar1Ref.current, bar2Ref.current, bar3Ref.current], {
+        backgroundColor: dark ? "#ffffff" : "#000000",
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    }
   }, []);
 
-  // Initial overlay state
+  // Initial overlay + bar state (GSAP owns bar colors)
   useEffect(() => {
     gsap.set(overlayRef.current, { clipPath: `circle(0px at ${ORIGIN})`, pointerEvents: "none" });
     gsap.set([...menuItemsRef.current, menuBtnRef.current], { opacity: 0, y: 24 });
+    gsap.set([bar1Ref.current, bar2Ref.current, bar3Ref.current], { backgroundColor: "#ffffff" });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Mobile menu animation
@@ -149,9 +158,9 @@ export default function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span ref={bar1Ref} className="block w-6 h-[2px]" style={{ backgroundColor: fgColor, transition: TRANSITION }} />
-          <span ref={bar2Ref} className="block w-6 h-[2px]" style={{ backgroundColor: fgColor, transition: TRANSITION }} />
-          <span ref={bar3Ref} className="block w-6 h-[2px]" style={{ backgroundColor: fgColor, transition: TRANSITION }} />
+          <span ref={bar1Ref} className="block w-6 h-[2px]" />
+          <span ref={bar2Ref} className="block w-6 h-[2px]" />
+          <span ref={bar3Ref} className="block w-6 h-[2px]" />
         </button>
       </div>
 
