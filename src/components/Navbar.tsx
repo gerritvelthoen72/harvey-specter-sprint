@@ -12,13 +12,15 @@ const navItems: { label: string; href: string }[] = [
   { label: "Contact",  href: "#contact" },
 ];
 
-function NavLink({ item }: { item: { label: string; href: string } }) {
+function NavLink({ item, scrolled }: { item: { label: string; href: string }; scrolled: boolean }) {
   const underlineRef = useRef<HTMLSpanElement>(null);
+  const color = scrolled ? "#000" : "#fff";
 
   return (
     <a
       href={item.href}
-      className="relative inline-block text-black"
+      className="relative inline-block transition-colors duration-300"
+      style={{ color }}
       onMouseEnter={() =>
         gsap.to(underlineRef.current, { scaleX: 1, transformOrigin: "left center", duration: 0.3, ease: "power2.out" })
       }
@@ -29,7 +31,8 @@ function NavLink({ item }: { item: { label: string; href: string } }) {
       {item.label}
       <span
         ref={underlineRef}
-        className="absolute bottom-0 left-0 w-full h-[1.5px] bg-black"
+        className="absolute bottom-0 left-0 w-full h-[1.5px]"
+        style={{ backgroundColor: color }}
         style={{ transform: "scaleX(0)" }}
       />
     </a>
@@ -37,8 +40,15 @@ function NavLink({ item }: { item: { label: string; href: string } }) {
 }
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen]     = useState(false);
+  const [scrolled, setScrolled]     = useState(false);
   const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const bar1Ref      = useRef<HTMLSpanElement>(null);
   const bar2Ref      = useRef<HTMLSpanElement>(null);
@@ -82,23 +92,27 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <div
-        className="flex items-center justify-between px-4 md:px-8 py-6 backdrop-blur-md"
-        style={{ fontFamily: "var(--font-dm-sans)", background: "rgba(255,255,255,0.3)" }}
+        className="flex items-center justify-between px-4 md:px-8 py-6 backdrop-blur-md transition-all duration-300"
+        style={{ fontFamily: "var(--font-dm-sans)", background: scrolled ? "rgba(255,255,255,0.3)" : "transparent", backdropFilter: scrolled ? undefined : "none" }}
       >
         {/* Logo */}
-        <a href="/" className="text-black text-base font-semibold tracking-[-0.04em] capitalize">
+        <a
+          href="/"
+          className="text-base font-semibold tracking-[-0.04em] capitalize transition-colors duration-300"
+          style={{ color: scrolled ? "#000" : "#fff" }}
+        >
           H.Studio
         </a>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-14 text-base font-semibold tracking-[-0.04em] capitalize">
-          {navItems.map((item) => <NavLink key={item.label} item={item} />)}
+          {navItems.map((item) => <NavLink key={item.label} item={item} scrolled={scrolled} />)}
         </div>
 
         {/* Desktop CTA */}
         <button
-          className="hidden md:flex items-center justify-center text-black text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer border border-black"
-          style={{ background: "transparent" }}
+          className="hidden md:flex items-center justify-center text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer border transition-colors duration-300"
+          style={{ color: scrolled ? "#000" : "#fff", borderColor: scrolled ? "#000" : "#fff", background: "transparent" }}
         >
           Let&apos;s talk
         </button>
@@ -109,9 +123,9 @@ export default function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span ref={bar1Ref} className="block w-6 h-[2px] bg-black" />
-          <span ref={bar2Ref} className="block w-6 h-[2px] bg-black" />
-          <span ref={bar3Ref} className="block w-6 h-[2px] bg-black" />
+          <span ref={bar1Ref} className="block w-6 h-[2px]" style={{ backgroundColor: scrolled ? "#000" : "#fff" }} />
+          <span ref={bar2Ref} className="block w-6 h-[2px]" style={{ backgroundColor: scrolled ? "#000" : "#fff" }} />
+          <span ref={bar3Ref} className="block w-6 h-[2px]" style={{ backgroundColor: scrolled ? "#000" : "#fff" }} />
         </button>
       </div>
 
