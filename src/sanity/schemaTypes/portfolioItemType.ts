@@ -41,6 +41,22 @@ export const portfolioItemType = defineType({
       options: { layout: 'tags' },
     }),
     defineField({
+      name: 'description',
+      type: 'text',
+      title: 'Description',
+      rows: 3,
+    }),
+    defineField({
+      name: 'client',
+      type: 'string',
+      title: 'Client',
+    }),
+    defineField({
+      name: 'year',
+      type: 'number',
+      title: 'Year',
+    }),
+    defineField({
       name: 'link',
       type: 'url',
       title: 'Project Link',

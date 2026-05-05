@@ -10,6 +10,9 @@ const mono = "var(--font-geist-mono)";
 export type ProjectItem = {
   _id: string;
   title: string;
+  description: string | null;
+  client: string | null;
+  year: number | null;
   imageUrl: string;
   alt: string;
   tags: string[];
@@ -58,7 +61,9 @@ function ProjectCard({ project }: { project: ProjectItem }) {
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between">
+
+      {/* Meta row: title + arrow */}
+      <div className="flex items-start justify-between gap-4 pt-1">
         <h3
           style={{
             fontFamily: sans,
@@ -73,12 +78,47 @@ function ProjectCard({ project }: { project: ProjectItem }) {
           {project.title}
         </h3>
         <div
-          className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+          className="shrink-0 mt-1 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
           style={{ color: "#000" }}
         >
           <ArrowIcon />
         </div>
       </div>
+
+      {/* Client + year */}
+      {(project.client || project.year) && (
+        <div className="flex items-center gap-3">
+          {project.client && (
+            <span style={{ fontFamily: mono, fontSize: 12, color: "#888", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              {project.client}
+            </span>
+          )}
+          {project.client && project.year && (
+            <span style={{ fontFamily: mono, fontSize: 12, color: "#ccc" }}>—</span>
+          )}
+          {project.year && (
+            <span style={{ fontFamily: mono, fontSize: 12, color: "#888", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              {project.year}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Description */}
+      {project.description && (
+        <p
+          style={{
+            fontFamily: sans,
+            fontSize: 14,
+            color: "#555",
+            lineHeight: 1.5,
+            letterSpacing: "-0.02em",
+            maxWidth: 480,
+          }}
+        >
+          {project.description}
+        </p>
+      )}
     </div>
   );
 
