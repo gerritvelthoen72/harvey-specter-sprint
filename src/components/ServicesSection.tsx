@@ -84,11 +84,11 @@ export default function ServicesSection() {
           <div key={s.num} className="flex flex-col gap-[9px] w-full group transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100">
             {/* Number + rule */}
             <p style={labelStyle}>{s.num}</p>
-            <div className="w-full border-t border-white transition-colors duration-300 group-hover:border-[#e8d5a3]" />
+            <div className="w-full border-t border-white" />
 
             {/* Desktop: title left, desc+image right | Mobile: stacked */}
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pt-2">
-              <p style={titleStyle} className="transition-colors duration-300 group-hover:text-[#e8d5a3]">{s.title}</p>
+              <p style={titleStyle}>{s.title}</p>
 
               <div className="flex flex-col md:flex-row items-start gap-6">
                 <p style={{ ...descStyle, maxWidth: 393 }}>{s.desc}</p>
