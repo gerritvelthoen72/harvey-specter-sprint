@@ -61,6 +61,7 @@ export default function AboutSection() {
   const sectionRef     = useRef<HTMLElement>(null);
   const imgDesktop     = useRef<HTMLImageElement>(null);
   const imgMobile      = useRef<HTMLImageElement>(null);
+  const quotedTextRef  = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -81,6 +82,18 @@ export default function AboutSection() {
           scrub: 1,
         },
       });
+
+      // Slide the quoted text box left on scroll
+      gsap.to(quotedTextRef.current, {
+        x: "-80px",
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 1.5,
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -93,7 +106,7 @@ export default function AboutSection() {
       <div className="hidden md:flex items-start justify-between gap-8">
         <p style={label}>[ About ]</p>
         <div className="flex items-end gap-8" style={{ width: 983 }}>
-          <div className="flex-1 min-w-0">
+          <div ref={quotedTextRef} className="flex-1 min-w-0">
             <QuotedText text={aboutText} />
           </div>
           <div className="flex flex-col gap-6 shrink-0">
