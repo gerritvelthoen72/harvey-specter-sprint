@@ -195,8 +195,8 @@ export default function Navbar() {
       {/* Mobile overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[60] bg-black flex flex-col items-center justify-center gap-8"
-        style={{ fontFamily: "var(--font-dm-sans)" }}
+        className="md:hidden fixed inset-0 z-[60] bg-black flex flex-col items-center justify-center gap-8"
+        style={{ fontFamily: "var(--font-dm-sans)", clipPath: `circle(0px at ${ORIGIN})`, pointerEvents: "none" }}
       >
         {navItems.map((item, i) => (
           <a
