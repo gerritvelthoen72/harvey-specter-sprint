@@ -167,7 +167,7 @@ export default function Navbar() {
           className="hidden md:flex items-center gap-14 text-base font-semibold tracking-[-0.04em] capitalize"
           style={{ color: "#000000" }}
         >
-          {navItems.map((item) => <NavLink key={item} item={item} />)}
+          {navItems.map((item) => <NavLink key={item.label} item={item} />)}
         </div>
 
         {/* Desktop CTA */}
