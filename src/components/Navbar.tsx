@@ -118,7 +118,8 @@ export default function Navbar() {
 
         {/* Hamburger */}
         <button
-          className="md:hidden flex flex-col gap-[5px] p-1"
+          className="md:hidden flex flex-col gap-[5px] p-1 relative"
+          style={{ zIndex: menuOpen ? 70 : undefined }}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMenuOpen((o) => !o)}
         >
