@@ -138,6 +138,7 @@ export default function Navbar() {
         onLeave:      () => animateToTheme(false),
         onEnterBack:  () => animateToTheme(true),
         onLeaveBack:  () => animateToTheme(false),
+        onToggle:     (self) => animateToTheme(self.isActive),
       })
     );
     return () => triggers.forEach((t) => t.kill());
@@ -174,7 +175,7 @@ export default function Navbar() {
         <TalkButton
           ref={navBtnRef}
           themeRef={navBtnThemeRef}
-          className="hidden md:flex items-center justify-center border border-black text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer"
+          className="hidden md:flex items-center justify-center border border-white text-sm font-medium px-4 py-3 rounded-3xl tracking-[-0.035em] cursor-pointer"
           variant="ghost"
         >
           Let&apos;s talk
