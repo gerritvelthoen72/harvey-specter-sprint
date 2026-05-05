@@ -62,7 +62,7 @@ export default function AboutSkills() {
               style={{
                 fontFamily: sans,
                 fontSize: "clamp(40px, 5vw, 72px)",
-                fontWeight: 300,
+                fontWeight: 700,
                 letterSpacing: "-0.07em",
                 lineHeight: 1,
                 color: "#000",
